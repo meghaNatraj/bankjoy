@@ -79,4 +79,63 @@ test.describe('Series Observations Tests', () => {
         console.log("Average USD to CAD average exchange rate in last 10 weeks: ", averageRate);
         expect.soft(averageRate).toBeGreaterThan(0);
     });
+    
+    // Negative test case
+    test('Verify Series Observations API 404 response for invalid series name [@series3]', async ({ }) => {
+        const seriesName = 'invalidSeriesName'; // Invalid series name
+        const format = 'json'; // Mandatory parameter
+        const options = {}; // Optional parameters
+        let observationsResponse = await getSeriesObservations(seriesName, format, options);
+
+        //Assertions for response status
+        expect.soft(observationsResponse.responseStatus).toBe(404);
+        expect.soft(observationsResponse.response.message).toBe(`Series ${seriesName} not found.`);   
+    });
+
+    test('Verify Series Observations API 404 response for missing series name [@series4]', async ({ }) => {
+        const format = 'json'; // Mandatory parameter
+        const options = {}; // Optional parameters
+        let observationsResponse = await getSeriesObservations('', format, options);        
+
+        //Assertions for response status
+        expect.soft(observationsResponse.responseStatus).toBe(404);
+        expect.soft(observationsResponse.response.message).toBe('Series json not found.');   
+    });
+
+    test('Verify Series Observations API 400 response for invalid format [@series5]', async ({ }) => {
+        const seriesName = 'FXUSDCAD'; // Mandatory parameter
+        const format = 'invalidFormat'; // Invalid format
+        const options = {}; // Optional parameters
+        let observationsResponse = await getSeriesObservations(seriesName, format, options);
+
+        //Assertions for response status
+        expect.soft(observationsResponse.responseStatus).toBe(400);
+        expect.soft(observationsResponse.response.message).toBe('Bad output format (invalidformat) requested.');   
+    });
+
+    test('Verify Series Observations API 400 response for invalid optional parameter [@series6]', async ({ }) => {
+        const seriesName = 'FXUSDCAD'; // Mandatory parameter
+        const format = 'json'; // Mandatory parameter
+        const options = {
+            "invalidParam": 10
+        }; // Invalid optional parameter
+        let observationsResponse = await getSeriesObservations(seriesName, format, options);
+
+        //Assertions for response status
+        expect.soft(observationsResponse.responseStatus).toBe(400);
+        expect.soft(observationsResponse.response.message).toBe('The following query parameters are invalid: invalidParam');   
+    });
+
+    test('Verify Series Observations API 400 response for invalid optional parameter value [@series7]', async ({ }) => {
+        const seriesName = 'FXUSDCAD'; // Mandatory parameter
+        const format = 'json'; // Mandatory parameter
+        const options = {
+            "recent_weeks": -10
+        }; // Invalid optional parameter value
+        let observationsResponse = await getSeriesObservations(seriesName, format, options);
+
+        //Assertions for response status
+        expect.soft(observationsResponse.responseStatus).toBe(400);
+        expect.soft(observationsResponse.response.message).toBe('Bad recent observations request parameters, you cannot have a recent value less than one');
+    });
 });
