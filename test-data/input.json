@@ -1,0 +1,14 @@
+{
+    "seriesData": [
+      {
+        "seriesName": "FXUSDCAD",
+        "label": "USD/CAD",
+        "description": "US dollar to Canadian dollar daily exchange rate"
+      },
+      {
+        "seriesName": "FXEURCAD",
+        "label": "EUR/CAD",
+        "description": "European euro to Canadian dollar daily exchange rate"
+      }
+    ]
+  }
