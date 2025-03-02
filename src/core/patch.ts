@@ -11,7 +11,13 @@ const PATCH = async (requestData: any) => {
         data: requestData.data,
     });
     const response = await call.text();
-    return { response: JSON.parse(response), responseStatus: call.status() };
+    let parsedResponse: any;
+    try {
+        parsedResponse = JSON.parse(response);
+    } catch (e) {
+        console.log("Error parsing POST response: ", e);
+    }
+    return { response: parsedResponse, responseStatus: call.status() };
 };
 
 export default PATCH;
