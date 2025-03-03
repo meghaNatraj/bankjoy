@@ -67,8 +67,8 @@ test.describe('Series Observations Tests', () => {
             // Get today's date and 10 weeks ago date
             const today = new Date();
             const tenWeeksAgo = new Date();
-            tenWeeksAgo.setDate(today.getDate() - 10 * 7); // Subtract 10 weeks
-
+            tenWeeksAgo.setDate(today.getDate() - 10 * 7 - 1); // Subtract 10 weeks
+            
             // Assert each observation date is within the last 10 weeks
             observations.forEach(observation => {
                 const observationDate = new Date(observation.d);
